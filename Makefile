@@ -28,8 +28,8 @@ clean:
 	rm *.o $(PROJ_NAME).elf $(PROJ_NAME).bin
 
 flash: $(PROJ_NAME).bin
-	st-flash write $(PROJ_NAME).bin 0x8000000
-	#stm32flash.sh -w $(PROJ_NAME).bin /dev/ttyUSB0
+	stm32flash.sh -w $(PROJ_NAME).bin /dev/ttyUSB0
+	# st-flash write $(PROJ_NAME).bin 0x8000000
 
 
 
