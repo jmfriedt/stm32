@@ -5,7 +5,7 @@ SRCS=uart.o main_uart.o
 
 DRAPEAU =-Wall
 DRAPEAU +=-mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F4 
-DRAPEAU +=--static -nostartfiles -L/home/diallo -Tstm32f4-discovery.ld
+DRAPEAU +=--static -nostartfiles -Tstm32f4-discovery.ld
 DRAPEAU +=-lopencm3_stm32f4 -I$(HOME)/sat/arm-none-eabi/include
 LDFLAGS = -L$(HOME)/sat/arm-none-eabi/lib
 
