@@ -1,6 +1,6 @@
 PROJ_NAME =test
 CC=arm-none-eabi-gcc
-SRCS=uart.o main_uart.o 
+SRCS=uart_f4.o main_uart.o 
 
 
 DRAPEAU =-Wall
@@ -17,8 +17,8 @@ $(PROJ_NAME).bin: $(PROJ_NAME).elf
 $(PROJ_NAME).elf: $(SRCS)
 	$(CC) $(DRAPEAU) -o $(PROJ_NAME).elf $(SRCS) $(LDFLAGS) -lopencm3_stm32f4
 
-uart.o: uart.c
-	$(CC) $(DRAPEAU) -c uart.c
+uart_f4.o: uart_f4.c
+	$(CC) $(DRAPEAU) -c uart_f4.c
 
 main_uart.o: main_uart.c
 	$(CC) $(DRAPEAU) -c main_uart.c

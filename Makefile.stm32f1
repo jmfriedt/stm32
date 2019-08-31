@@ -1,0 +1,37 @@
+PROJ_NAME =test
+CC=arm-none-eabi-gcc
+SRCS=uart_f1.o main_uart.o 
+
+
+DRAPEAU =-Wall
+DRAPEAU +=-mthumb -mcpu=cortex-m3 -DSTM32F1
+DRAPEAU +=--static -nostartfiles -Tstm32f1.ld
+DRAPEAU +=-lopencm3_stm32f1 -I$(HOME)/sat/arm-none-eabi/include
+LDFLAGS = -L$(HOME)/sat/arm-none-eabi/lib
+
+all:$(PROJ_NAME).bin
+
+$(PROJ_NAME).bin: $(PROJ_NAME).elf
+	arm-none-eabi-objcopy -Obinary $(PROJ_NAME).elf $(PROJ_NAME).bin
+
+$(PROJ_NAME).elf: $(SRCS)
+	$(CC) $(DRAPEAU) -o $(PROJ_NAME).elf $(SRCS) $(LDFLAGS) -lopencm3_stm32f1
+
+uart_f1.o: uart_f1.c
+	$(CC) $(DRAPEAU) -c uart_f1.c
+
+main_uart.o: main_uart.c
+	$(CC) $(DRAPEAU) -c main_uart.c
+
+
+clean:
+	rm *.o $(PROJ_NAME).elf $(PROJ_NAME).bin
+
+flash: $(PROJ_NAME).bin
+	stm32flash.sh -w $(PROJ_NAME).bin /dev/ttyUSB0
+	# st-flash write $(PROJ_NAME).bin 0x8000000
+
+
+
+
+

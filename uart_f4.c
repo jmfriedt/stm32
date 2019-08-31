@@ -2,8 +2,6 @@
 #include <libopencm3/stm32/gpio.h>
 #include <libopencm3/stm32/usart.h>
 #include <libopencm3/stm32/timer.h>
-#include <libopencm3/stm32/f4/memorymap.h>
-
 #include <libopencm3/stm32/flash.h> // definitions du timer
 
 #define netwk
@@ -47,7 +45,8 @@ const struct rcc_clock_scale rcc_hse_20mhz_3v3 = {
 */
 
 void core_clock_setup(void)
-{rcc_clock_setup_hse_3v3(&rcc_hse_20mhz_3v3); // custom version
+{
+ 	rcc_clock_setup_hse_3v3(&rcc_hse_20mhz_3v3); // custom version
 }
 
 void mon_putchar(unsigned char ch)
