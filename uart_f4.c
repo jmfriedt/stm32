@@ -46,7 +46,8 @@ const struct rcc_clock_scale rcc_hse_20mhz_3v3 = {
 
 void core_clock_setup(void)
 {
- 	rcc_clock_setup_hse_3v3(&rcc_hse_20mhz_3v3); // custom version
+ 	// rcc_clock_setup_hse_3v3(&rcc_hse_20mhz_3v3); // custom version
+	rcc_clock_setup_pll(&rcc_hse_20mhz_3v3);
 }
 
 void mon_putchar(unsigned char ch)
