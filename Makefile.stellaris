@@ -1,0 +1,31 @@
+PROJ_NAME =test
+CC=arm-none-eabi-gcc
+SRCS=uart_stellaris.o main_uart.o 
+
+
+DRAPEAU =-Wall
+DRAPEAU +=-mthumb -mhard-float -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mcpu=cortex-m4 -DLM4F
+DRAPEAU +=--static -nostartfiles -Tstellaris.ld -I$(HOME)/sat/arm-none-eabi/include
+LDFLAGS = -mhard-float -mfloat-abi=hard -mfpu=fpv4-sp-d16 -L$(HOME)/sat/arm-none-eabi/lib
+LDFLAGS +=-lopencm3_lm4f 
+
+all:$(PROJ_NAME).bin
+
+$(PROJ_NAME).bin: $(PROJ_NAME).elf
+	arm-none-eabi-objcopy -Obinary $(PROJ_NAME).elf $(PROJ_NAME).bin
+
+$(PROJ_NAME).elf: $(SRCS)
+	$(CC) $(DRAPEAU) -o $(PROJ_NAME).elf $(SRCS) $(LDFLAGS)
+
+uart_stellaris.o: uart_stellaris.c
+	$(CC) $(DRAPEAU) -c uart_stellaris.c
+
+main_uart.o: main_uart.c
+	$(CC) $(DRAPEAU) -c main_uart.c
+
+
+clean:
+	rm *.o $(PROJ_NAME).elf $(PROJ_NAME).bin
+
+run: $(PROJ_NAME).elf
+	qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb -nographic -vga none -net none -serial mon:stdio -kernel $(PROJ_NAME).elf
