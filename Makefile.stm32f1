@@ -1,11 +1,12 @@
 PROJ_NAME =test
 CC=arm-none-eabi-gcc
 SRCS=uart_f1.o main_uart.o 
+# REPERTOIRE=/home/jmfriedt/sat/libopencm3
 REPERTOIRE=/home/jmfriedt/libopencm3
 
 DRAPEAU =-Wall
 DRAPEAU +=-mthumb -mcpu=cortex-m3 -DSTM32F1
-DRAPEAU +=--static -nostartfiles -Tstm32f1.ld
+DRAPEAU +=--static  -Tstm32f1.ld -nostartfiles
 DRAPEAU +=-lopencm3_stm32f1 -I$(REPERTOIRE)/include
 LDFLAGS = -L$(REPERTOIRE)/lib
 
@@ -29,7 +30,3 @@ clean:
 flash: $(PROJ_NAME).bin
 	stm32flash.sh -w $(PROJ_NAME).bin /dev/ttyUSB0
 	# st-flash write $(PROJ_NAME).bin 0x8000000
-
-run: $(PROJ_NAME).elf
-	qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb -nographic -vga none -net none -serial mon:stdio -kernel $(PROJ_NAME).elf
-

@@ -4,6 +4,8 @@
 #include <libopencm3/stm32/timer.h>
 #include <libopencm3/stm32/flash.h> // definitions du timer
 
+#define usart1
+
 void core_clock_setup(void)
 {
 #ifdef STM32F10X_LD_VL
@@ -16,7 +18,7 @@ void core_clock_setup(void)
 void mon_putchar(unsigned char ch)
 {
 	usart_send_blocking(USART1, ch);
-	usart_send_blocking(USART2, ch);
+//	usart_send_blocking(USART2, ch);
 }
 
 void mon_puts(char *buf)
@@ -43,6 +45,8 @@ void delay(unsigned int delay)
 void init_gpio(void)
 {
 	/* Setup GPIO for LED. */
+ gpio_set_mode(GPIOC,GPIO_MODE_OUTPUT_2_MHZ,GPIO_CNF_OUTPUT_PUSHPULL,GPIO1|GPIO2);
+
 #ifdef usart1
   gpio_set_mode(GPIOA, GPIO_MODE_OUTPUT_50_MHZ,
       GPIO_CNF_OUTPUT_ALTFN_PUSHPULL, GPIO_USART1_TX);
@@ -63,7 +67,8 @@ void clock_setup(void)
 #ifdef netwk
 	rcc_periph_clock_enable(RCC_GPIOA);
 #else
-	rcc_periph_clock_enable(RCC_GPIOD);
+	rcc_periph_clock_enable(RCC_GPIOA);
+	rcc_periph_clock_enable(RCC_GPIOC);
 #endif
 
 	/* Enable clocks for USART2. */
@@ -77,7 +82,7 @@ void led_set(int msk)
 #ifdef netwk
 	gpio_set(GPIOA, msk);
 #else
-	gpio_set(GPIOD, GPIO15|GPIO12);
+	gpio_set(GPIOC, GPIO1|GPIO2);
 #endif
 }
 
@@ -86,7 +91,7 @@ void led_clr(int msk)
 #ifdef netwk
 	gpio_clear(GPIOA, msk);
 #else
-	gpio_clear(GPIOD, GPIO15|GPIO12);
+	gpio_clear(GPIOC, GPIO1|GPIO2);
 #endif
 }
 

@@ -24,3 +24,7 @@ main_uart.o: main_uart.c
 
 clean:
 	rm *.o $(PROJ_NAME).elf $(PROJ_NAME).bin
+
+run: $(PROJ_NAME).elf
+	qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb -nographic -vga none -net none -serial mon:stdio -kernel $(PROJ_NAME).elf
+
