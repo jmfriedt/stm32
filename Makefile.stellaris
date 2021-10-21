@@ -4,8 +4,8 @@ SRCS=uart_stellaris.o main_uart.o
 
 DRAPEAU =-Wall
 DRAPEAU +=-mthumb -mhard-float -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mcpu=cortex-m4 -DLM4F
-DRAPEAU +=--static -nostartfiles -Tstellaris.ld -I$(HOME)/sat/arm-none-eabi/include
-LDFLAGS = -mhard-float -mfloat-abi=hard -mfpu=fpv4-sp-d16 -L$(HOME)/sat/arm-none-eabi/lib
+DRAPEAU +=--static -nostartfiles -Tstellaris.ld -I$(HOME)/libopencm3/include
+LDFLAGS = -mhard-float -mfloat-abi=hard -mfpu=fpv4-sp-d16 -L$(HOME)//libopencm3/lib
 LDFLAGS +=-lopencm3_lm4f 
 
 all:$(PROJ_NAME).bin
