@@ -9,9 +9,6 @@ all:$(PROJ_NAME).pc
 $(PROJ_NAME).pc: $(SRCS)
 	$(CC) $(DRAPEAU) -o $(PROJ_NAME).pc $(SRCS) $(LDFLAGS) 
 
-uart_f1.o: uart_f1.c
-	$(CC) $(DRAPEAU) -c uart_f1.c
-
 main_uart.o: main_uart.c
 	$(CC) $(DRAPEAU) -c main_uart.c
 
