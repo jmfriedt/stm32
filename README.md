@@ -18,3 +18,6 @@ For STM32F1(03) based boards,
 ln -s Makefile.stm32f1
 make
 ```
+
+
+add demonstration modification
