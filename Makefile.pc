@@ -1,0 +1,19 @@
+PROJ_NAME =test
+CC=gcc
+SRCS=uart_pc.o main_uart.o 
+
+DRAPEAU =-Wall
+
+all:$(PROJ_NAME).pc
+
+$(PROJ_NAME).pc: $(SRCS)
+	$(CC) $(DRAPEAU) -o $(PROJ_NAME).pc $(SRCS) $(LDFLAGS) 
+
+uart_f1.o: uart_f1.c
+	$(CC) $(DRAPEAU) -c uart_f1.c
+
+main_uart.o: main_uart.c
+	$(CC) $(DRAPEAU) -c main_uart.c
+
+clean:
+	rm *.o $(PROJ_NAME).pc
