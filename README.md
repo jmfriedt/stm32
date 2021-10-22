@@ -15,6 +15,6 @@ make
 
 For STM32F1(03) based boards,
 ```shell
-ln -s Makefile.stm32f1
+ln -s Makefile.stm32f1  
 make
 ```
