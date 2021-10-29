@@ -1,4 +1,5 @@
-PATH:=$(HOME)/enseignement/ufr/platforms/stm32/qemu/qemu_stm32/arm-softmmu:$(PATH)
+# PATH:=$(HOME)/enseignement/ufr/platforms/stm32/qemu/qemu_stm32/arm-softmmu:$(PATH)
+PATH:=$(HOME)/qemu_stm32/arm-softmmu:$(PATH)
 PROJ_NAME =test
 CC=arm-none-eabi-gcc
 SRCS=uart_f1.o main_uart.o 
