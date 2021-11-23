@@ -1,17 +1,13 @@
-#include <libopencm3/stm32/rcc.h>
-#include <libopencm3/stm32/gpio.h>
-#include <libopencm3/stm32/dma.h>
-#include <libopencm3/cm3/nvic.h>
-#include <libopencm3/stm32/spi.h>
+#include "spi_f1.h"
 
-static void spi_clock_setup(void)
+void spi_clock_setup(void)
 {
  rcc_periph_clock_enable(RCC_GPIOB); // SPI2 = PORTB ; GPIOB12 = manual CS#
  rcc_periph_clock_enable(RCC_AFIO);
  rcc_periph_clock_enable(RCC_SPI2);
 }
 
-static void spi_setup(void) {
+void spi_setup(void) {
   /* Configure GPIOs: SS=PB12, SCK=PB13, MISO=PB14 and MOSI=PB15 */
   gpio_set_mode(GPIOB, GPIO_MODE_OUTPUT_50_MHZ,
             GPIO_CNF_OUTPUT_ALTFN_PUSHPULL, GPIO13 | GPIO15 );
