@@ -6,4 +6,6 @@
 
 void spi_clock_setup(void);
 void spi_setup(void);
-int spi_txrx(char );
+int spi_txrx(char);
+void spi_cs_low(void);
+void spi_cs_hi(void);

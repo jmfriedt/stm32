@@ -44,6 +44,10 @@ void spi_setup(void) {
   spi_enable(SPI2);
 }
 
+void spi_cs_low(void) {gpio_clear(GPIOB, GPIO12);}
+
+void spi_cs_hi(void)  {gpio_set  (GPIOB, GPIO12);}
+
 int spi_txrx(char c)
 { spi_send(SPI2,c); 
   return(spi_read(SPI2));   // always read after write to avoid averflow
