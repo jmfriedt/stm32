@@ -12,9 +12,9 @@ int main()
  usart_setup();
  while(1)
   {led_set(msk);
-   mon_putchar('r');
-   mon_putchar('\r');
-   mon_putchar('\n');
+   my_putchar(sizeof(int)+'0');
+   my_putchar('\r');
+   my_putchar('\n');
    delay(0xffff);
   }
  return 0;

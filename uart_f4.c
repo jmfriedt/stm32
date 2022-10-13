@@ -53,13 +53,13 @@ void core_clock_setup(void)
 	rcc_clock_setup_pll(&rcc_hse_20mhz_3v3);
 }
 
-void mon_putchar(unsigned char ch)
+void my_putchar(unsigned char ch)
 {
 	usart_send_blocking(USART1, ch);
 	usart_send_blocking(USART2, ch);
 }
 
-void mon_puts(char *buf)
+void my_puts(char *buf)
 {
 	int i=0; // nbre de caractère initialisé à 0
 	char tmp=0; // caractere actuels
@@ -67,7 +67,7 @@ void mon_puts(char *buf)
 	{
 		tmp=buf[i];
 		i++;
-		mon_putchar(tmp);
+		my_putchar(tmp);
 	}
 	while(tmp !='\0'); // on boucle tant qu'on n'est pas arrivé à l'\0
 }
