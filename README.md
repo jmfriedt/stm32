@@ -24,3 +24,9 @@ https://github.com/beckus/qemu_stm32 and
 ```shell
 make -f Makefile.stm32f1 qemu
 ```
+
+The software architecture is organized to provide functions with the same prototype (input
+and output arguments) for various microcontroller architectures and select upon linking
+which version is used with portable, common main functions. Start with ``main_uart.c`` as
+a basic example, and link the appropriate ``Makefile.*`` to ``Makefile`` (ln -s) to compile
+for the given target using ``make``.
