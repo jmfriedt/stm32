@@ -2,30 +2,28 @@
 #include <reent.h>
 #include <sys/stat.h>
 
-#include <stm32/usart.h> // USART1
+#include <libopencm3/stm32/usart.h> // USART1
 
-_ssize_t _read_r(struct _reent *r, int file, void *ptr, size_t len) {return 0;}
+_ssize_t _read(int file, void *ptr, size_t len) {return 0;}
 
-_ssize_t _write_r ( struct _reent *r, int file, const void *ptr, size_t len)
+_ssize_t _write(int file, const void *ptr, size_t len)
 {
  unsigned int i;
  const char *c;
  c=ptr;
- for (i=0;i<len;i++) usart_send_data(USART1, c[i]);
+ for (i=0;i<len;i++) usart_send(USART1, c[i]);
  return len;
 }
 
 
-int _close_r(  
-    struct _reent *r, 
+int _close(  
     int file)
 {
 	return 0;
 }
 
 
-_off_t _lseek_r(
-    struct _reent *r, 
+_off_t _lseek(
     int file, 
     _off_t ptr, 
     int dir)
@@ -34,8 +32,7 @@ _off_t _lseek_r(
 }
 
 
-int _fstat_r(
-    struct _reent *r, 
+int _fstat(
     int file, 
     struct stat *st)
 {
@@ -49,7 +46,6 @@ int _fstat_r(
 }
 
 
-// inutile : jmfriedt
 int _isatty(int file); // avoid warning 
 
 int _isatty(int file)
@@ -89,16 +85,16 @@ static char *heap_ptr;		/* Points to current end of the heap.	*/
  *         Since _s_r is not used in the current implementation, 
  *         the following messages must be suppressed.
  */
-void * _sbrk_r(struct _reent *_s_r,ptrdiff_t nbytes)
+void * _sbrk(ptrdiff_t nbytes)
 {char  *base;	
  if (!heap_ptr) {heap_ptr = end;} //  Initialize if first time through.  
  base = heap_ptr;	          //  Point to end of heap.  
  heap_ptr += nbytes;  	          //  Increase heap.  
 
-usart_send_data(USART1,(nbytes&0xf000)>>12+'0');
-usart_send_data(USART1,(nbytes&0x0f00)>> 8+'0');
-usart_send_data(USART1,(nbytes&0x00f0)>> 4+'0');
-usart_send_data(USART1,(nbytes&0x000f)    +'0');
+usart_send(USART1,(nbytes&0xf000)>>12+'0');
+usart_send(USART1,(nbytes&0x0f00)>> 8+'0');
+usart_send(USART1,(nbytes&0x00f0)>> 4+'0');
+usart_send(USART1,(nbytes&0x000f)    +'0');
 	return base;		/*  Return pointer to start of new heap area.*/
 }
 
