@@ -1,0 +1,40 @@
+PROJ_NAME =test
+CC=arm-none-eabi-gcc
+# SRCS=../uart_f1.o lorenz_float.o fixed.o
+SRCS=uart_f1.o lorenz_fixed.o fixed.o
+REPERTOIRE=/home/jmfriedt/libopencm3
+
+DRAPEAU =-Wall
+DRAPEAU +=-mthumb -mcpu=cortex-m3 -DSTM32F1
+DRAPEAU +=--static  -Tstm32f1.ld -nostartfiles
+DRAPEAU +=-lopencm3_stm32f1 -I$(REPERTOIRE)/include -I../
+LDFLAGS = -L$(REPERTOIRE)/lib -L../ -lm
+
+all:$(PROJ_NAME).bin
+
+$(PROJ_NAME).bin: $(PROJ_NAME).elf
+	arm-none-eabi-objcopy -Obinary $(PROJ_NAME).elf $(PROJ_NAME).bin
+
+$(PROJ_NAME).elf: $(SRCS)
+	$(CC) $(DRAPEAU) -o $(PROJ_NAME).elf $(SRCS) $(LDFLAGS) -lopencm3_stm32f1
+
+uart_f1.o: ../uart_f1.c
+	$(CC) $(DRAPEAU) -c ../uart_f1.c
+
+lorenz_fixed.o: lorenz_fixed.c
+	$(CC) $(DRAPEAU) -c lorenz_fixed.c
+
+lorenz_float.o: lorenz_float.c
+	$(CC) $(DRAPEAU) -c lorenz_float.c
+
+main_uart.o: main_uart.c
+	$(CC) $(DRAPEAU) -c main_uart.c
+
+fixed.o: fixed.c
+	$(CC) $(DRAPEAU) -c fixed.c
+
+clean:
+	rm *.o $(PROJ_NAME).elf $(PROJ_NAME).bin
+
+flash: $(PROJ_NAME).bin
+	stm32flash.sh -w $(PROJ_NAME).bin /dev/ttyUSB3
