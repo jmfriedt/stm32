@@ -1,4 +1,3 @@
-//28"
 // gcc -o lorenz_fixed lorenz_fixed.c fixed.c
 #define usart1
 #include "uart.h"

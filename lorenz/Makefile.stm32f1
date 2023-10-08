@@ -18,7 +18,7 @@ $(PROJ_NAME).elf: $(SRCS)
 	$(CC) $(DRAPEAU) -o $(PROJ_NAME).elf $(SRCS) $(LDFLAGS) -lopencm3_stm32f1
 
 uart_f1.o: ../uart_f1.c
-	$(CC) $(DRAPEAU) -c uart_f1.c
+	$(CC) $(DRAPEAU) -c ../uart_f1.c
 
 lorenz_fixed.o: lorenz_fixed.c
 	$(CC) $(DRAPEAU) -c lorenz_fixed.c
