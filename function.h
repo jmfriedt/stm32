@@ -1,0 +1,1 @@
+void fonction(short);

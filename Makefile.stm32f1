@@ -1,8 +1,8 @@
-PATH:=$(HOME)/stm32/qemu/qemu_stm32/arm-softmmu:$(PATH)
+PATH:=/home/jmfriedt/qemu_stm32/arm-softmmu:$(PATH)
 # PATH:=$(HOME)/qemu_stm32/arm-softmmu:$(PATH)
 PROJ_NAME =test
 CC=arm-none-eabi-gcc
-SRCS=uart_f1.o main_uart.o
+SRCS=uart_f1.o main_uart.o function.o
 # REPERTOIRE=/home/jmfriedt/sat/libopencm3
 REPERTOIRE=/home/jmfriedt/libopencm3
 
@@ -19,6 +19,9 @@ $(PROJ_NAME).bin: $(PROJ_NAME).elf
 
 $(PROJ_NAME).elf: $(SRCS)
 	$(CC) $(DRAPEAU) -o $(PROJ_NAME).elf $(SRCS) $(LDFLAGS) -lopencm3_stm32f1
+
+function.o: function.c
+	$(CC) $(DRAPEAU) -c function.c
 
 uart_f1.o: uart_f1.c
 	$(CC) $(DRAPEAU) -c uart_f1.c

@@ -4,15 +4,19 @@
 #define usart1
 #include "uart.h"
 
+#include "function.h"
+
 int main()
 {int msk;
+ short s=0x1234;
  msk=(1<<11)|(1<<12)|(1<<13);
  clock_setup();
  init_gpio();
  usart_setup();
  while(1)
   {led_set(msk);
-   my_putchar(sizeof(int)+'0');
+//   my_putchar(sizeof(int)+'0');
+   fonction(s);
    my_putchar('\r');
    my_putchar('\n');
    delay(0xffff);
