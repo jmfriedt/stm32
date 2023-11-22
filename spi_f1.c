@@ -17,7 +17,7 @@ void spi_setup(void) {
             GPIO14);
 
   /* Reset SPI, SPI_CR1 register cleared, SPI is disabled */
-  spi_reset(SPI2);
+  rcc_periph_reset_pulse(RST_SPI1); // see https://github.com/libopencm3/libopencm3/pull/268
 
   /* Set up SPI in Master mode with:
    * Clock baud rate: 1/64 of peripheral clock frequency
