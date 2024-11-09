@@ -91,10 +91,13 @@ void * _sbrk(ptrdiff_t nbytes)
  base = heap_ptr;	          //  Point to end of heap.  
  heap_ptr += nbytes;  	          //  Increase heap.  
 
-usart_send(USART1,(nbytes&0xf000)>>12+'0');
-usart_send(USART1,(nbytes&0x0f00)>> 8+'0');
-usart_send(USART1,(nbytes&0x00f0)>> 4+'0');
+usart_send(USART1,((nbytes&0xf000)>>12)+'0');
+usart_send(USART1,((nbytes&0x0f00)>> 8)+'0');
+usart_send(USART1,((nbytes&0x00f0)>> 4)+'0');
 usart_send(USART1,(nbytes&0x000f)    +'0');
 	return base;		/*  Return pointer to start of new heap area.*/
 }
 
+int _kill(int file) { return 1; }
+
+int _getpid(int file) { return 1; }
