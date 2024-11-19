@@ -1,0 +1,62 @@
+PROJ_NAME =test
+CC=arm-none-eabi-gcc
+SRCS=uart_f1.o main_uart.o spi_f1.o # syscalls_template.o
+# REPERTOIRE=/home/jmfriedt/sat/libopencm3
+REPERTOIRE=/home/jmfriedt/libopencm3
+# PATH:=/home/jmfriedt/enseignement/sqnx/platforms/stm32/qemu/qemu_stm32/arm-softmmu/:$(PATH)
+
+DRAPEAU =-g -Wall
+DRAPEAU +=-mthumb -mcpu=cortex-m3 -DSTM32F1 -DSTM32F10X_LD_VL
+DRAPEAU +=--static  -Tstm32f1.ld -nostartfiles
+DRAPEAU +=-lopencm3_stm32f1 -I$(REPERTOIRE)/include
+LDFLAGS =-g -L$(REPERTOIRE)/lib -lm
+
+all:$(PROJ_NAME).bin
+
+$(PROJ_NAME).bin: $(PROJ_NAME).elf
+	arm-none-eabi-objcopy -Obinary $(PROJ_NAME).elf $(PROJ_NAME).bin
+
+$(PROJ_NAME).elf: $(SRCS)
+	$(CC) $(DRAPEAU) -o $(PROJ_NAME).elf $(SRCS) $(LDFLAGS) -lopencm3_stm32f1 -lc -lnosys
+
+uart_f1.o: uart_f1.c
+	$(CC) $(DRAPEAU) -c uart_f1.c
+
+spi_f1.o: spi_f1.c
+	$(CC) $(DRAPEAU) -c spi_f1.c
+
+main_uart.o: main_uart.c
+	$(CC) $(DRAPEAU) -c main_uart.c
+
+main_spi.o: main_spi.c
+	$(CC) $(DRAPEAU) -c main_spi.c
+
+main_racine.o: main_racine.c
+	$(CC) $(DRAPEAU) -c main_racine.c
+
+racine.o: racine/racine.c
+	$(CC) $(DRAPEAU) -c racine/racine.c -o racine.o
+
+fixed.o: racine/fixed.c
+	$(CC) $(DRAPEAU) -c racine/fixed.c -o fixed.o
+
+syscalls_template.o: syscalls_template.c
+	$(CC) $(DRAPEAU) -c syscalls_template.c
+
+clean:
+	rm *.o $(PROJ_NAME).elf $(PROJ_NAME).bin
+
+flash: $(PROJ_NAME).bin
+	stm32flash.sh -w $(PROJ_NAME).bin /dev/ttyUSB0
+	# st-flash write $(PROJ_NAME).bin 0x8000000
+
+monqemu: $(PROJ_NAME).bin
+	which qemu-system-arm
+	qemu-system-arm -M stm32-p103 -serial stdio -serial stdio -kernel $(PROJ_NAME).bin -nographic
+
+qemu-gdb: $(PROJ_NAME).bin
+	qemu-system-arm -M stm32vldiscovery -s -S -serial stdio -kernel $(PROJ_NAME).bin
+#	qemu-system-arm -M stm32-p103 -s -serial stdio -kernel $(PROJ_NAME).bin
+
+qemu: $(PROJ_NAME).bin
+	qemu-system-arm -M stm32vldiscovery -serial stdio -kernel $(PROJ_NAME).bin
