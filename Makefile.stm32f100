@@ -4,10 +4,11 @@ SRCS=uart_f1.o main_uart.o spi_f1.o syscalls_template.o
 REPERTOIRE=/home/jmfriedt/libopencm3
 # PATH:=/home/jmfriedt/enseignement/sqnx/platforms/stm32/qemu/qemu_stm32/arm-softmmu/:$(PATH)
 
+COMMONS = -mthumb -mcpu=cortex-m3
 DRAPEAU =-g -Wall
-DRAPEAU +=-mthumb -mcpu=cortex-m3 -DSTM32F1 -DSTM32F10X_LD_VL
+DRAPEAU +=$(COMMONS) -DSTM32F1 -DSTM32F10X_LD_VL
 DRAPEAU +=-I$(REPERTOIRE)/include
-LDFLAGS =-g -L$(REPERTOIRE)/lib -lm --static  -Tstm32f1.ld -nostartfiles
+LDFLAGS = $(COMMONS) -g -L$(REPERTOIRE)/lib -lm --static  -Tstm32f1.ld -nostartfiles
 LDFLAGS +=-lopencm3_stm32f1 -lc -lnosys
 
 all:$(PROJ_NAME).bin
