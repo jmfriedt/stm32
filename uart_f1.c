@@ -86,7 +86,12 @@ void clock_setup(void)
 void led_set(int msk)
 {
 #ifdef STM32F10X_LD_VL
-	gpio_set(GPIOC, GPIO8|GPIO9);
+	switch (msk)
+         {case 0: gpio_set(GPIOC, GPIO8);break; // blue
+          case 1: gpio_set(GPIOC,GPIO9); break; // green
+          case 3: gpio_set(GPIOC,GPIO7); break;
+          default:gpio_set(GPIOC, GPIO8|GPIO9);
+         }
 #else
 #ifdef netwk
 	gpio_set(GPIOA, msk);
@@ -99,7 +104,12 @@ void led_set(int msk)
 void led_clr(int msk)
 {
 #ifdef STM32F10X_LD_VL
-	gpio_clear(GPIOC, GPIO8|GPIO9);
+	switch (msk)
+         {case 0: gpio_clear(GPIOC, GPIO8);break; // blue
+          case 1: gpio_clear(GPIOC,GPIO9); break; // green
+          case 3: gpio_clear(GPIOC,GPIO7); break;
+          default:gpio_clear(GPIOC, GPIO8|GPIO9);
+         }
 #else
 #ifdef netwk
 	gpio_clear(GPIOA, msk);
