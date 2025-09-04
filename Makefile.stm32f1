@@ -3,14 +3,13 @@ PATH:=/home/jmfriedt/qemu_stm32/arm-softmmu:$(PATH)
 PROJ_NAME =test
 CC=arm-none-eabi-gcc
 SRCS=uart_f1.o main_uart.o function.o
-# REPERTOIRE=/home/jmfriedt/sat/libopencm3
 REPERTOIRE=/home/jmfriedt/libopencm3
 
-DRAPEAU =-Wall
+DRAPEAU =-Wall -g
 DRAPEAU +=-mthumb -mcpu=cortex-m3 -DSTM32F1
 DRAPEAU +=--static  -Tstm32f1.ld -nostartfiles
-DRAPEAU +=-lopencm3_stm32f1 -I$(REPERTOIRE)/include
-LDFLAGS = -L$(REPERTOIRE)/lib -lm
+DRAPEAU += -I$(REPERTOIRE)/include
+LDFLAGS = -g -L$(REPERTOIRE)/lib -lm -lopencm3_stm32f1 # -lc -lnosys
 
 all:$(PROJ_NAME).bin
 
@@ -53,3 +52,6 @@ flash: $(PROJ_NAME).bin
 
 qemu: $(PROJ_NAME).bin
 	qemu-system-arm -M stm32-p103 -serial stdio -serial stdio -serial stdio -kernel $(PROJ_NAME).bin
+
+qemu-gdb: $(PROJ_NAME).bin
+	qemu-system-arm -M stm32-p103 -s -serial stdio -serial stdio -serial stdio -kernel $(PROJ_NAME).bin

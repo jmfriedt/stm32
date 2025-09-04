@@ -9,7 +9,8 @@
 void core_clock_setup(void)
 {
 #ifdef STM32F10X_LD_VL
- rcc_clock_setup_in_hse_8mhz_out_24mhz();  // STM32F100 discovery
+ rcc_clock_setup_pll(&rcc_hse_configs[RCC_CLOCK_HSE8_24MHZ]);
+// rcc_clock_setup_in_hse_8mhz_out_24mhz();  // STM32F100 discovery
 #else
 // rcc_clock_setup_in_hse_8mhz_out_72mhz();  // STM32F103 obsolete
  rcc_clock_setup_pll(&rcc_hse_configs[RCC_CLOCK_HSE8_72MHZ]);
@@ -46,7 +47,11 @@ void delay(unsigned int delay)
 void init_gpio(void)
 {
 	/* Setup GPIO for LED. */
+#ifdef STM32F10X_LD_VL
+ gpio_set_mode(GPIOC,GPIO_MODE_OUTPUT_2_MHZ,GPIO_CNF_OUTPUT_PUSHPULL,GPIO7|GPIO8|GPIO9);
+#else
  gpio_set_mode(GPIOC,GPIO_MODE_OUTPUT_2_MHZ,GPIO_CNF_OUTPUT_PUSHPULL,GPIO1|GPIO2);
+#endif
 
 #ifdef usart1
   gpio_set_mode(GPIOA, GPIO_MODE_OUTPUT_50_MHZ,
@@ -80,19 +85,37 @@ void clock_setup(void)
 
 void led_set(int msk)
 {
+#ifdef STM32F10X_LD_VL
+	switch (msk)
+         {case 0: gpio_set(GPIOC, GPIO8);break; // blue
+          case 1: gpio_set(GPIOC,GPIO9); break; // green
+          case 3: gpio_set(GPIOC,GPIO7); break;
+          default:gpio_set(GPIOC, GPIO8|GPIO9);
+         }
+#else
 #ifdef netwk
 	gpio_set(GPIOA, msk);
 #else
 	gpio_set(GPIOC, GPIO1|GPIO2);
 #endif
+#endif
 }
 
 void led_clr(int msk)
 {
+#ifdef STM32F10X_LD_VL
+	switch (msk)
+         {case 0: gpio_clear(GPIOC, GPIO8);break; // blue
+          case 1: gpio_clear(GPIOC,GPIO9); break; // green
+          case 3: gpio_clear(GPIOC,GPIO7); break;
+          default:gpio_clear(GPIOC, GPIO8|GPIO9);
+         }
+#else
 #ifdef netwk
 	gpio_clear(GPIOA, msk);
 #else
 	gpio_clear(GPIOC, GPIO1|GPIO2);
+#endif
 #endif
 }
 
