@@ -30,3 +30,16 @@ and output arguments) for various microcontroller architectures and select upon 
 which version is used with portable, common main functions. Start with ``main_uart.c`` as
 a basic example, and link the appropriate ``Makefile.*`` to ``Makefile`` (ln -s) to compile
 for the given target using ``make``.
+
+## Issue
+
+In case the STM32VL-Discovery board returns
+```
+2025-01-28T20:14:56 INFO flashloader.c: Starting Flash write for VL/F0/F3/F1_XL
+2025-01-28T20:14:56 INFO flash_loader.c: Successfully loaded flash loader in sram
+2025-01-28T20:14:56 INFO common.c: Go to Thumb mode
+2025-01-28T20:14:56 ERROR flash_loader.c: Flash loader run error
+...
+```
+then <a href="https://community.st.com/t5/stm32-mcus-products/how-to-unbrick/td-p/552609">connect
+pin BOOT to 3.3V</a> and reset before launching ``st-flash``.
