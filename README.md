@@ -3,7 +3,7 @@ Assumes libopencm3 (https://github.com/libopencm3/libopencm3) is installed (``gi
 
 For STM32F1(00)-VL-Discovery board, 
 ```shell
-ln -s Makefile.stm32f1 Makefile
+ln -s Makefile.stm32f100 Makefile
 make
 ```
 
