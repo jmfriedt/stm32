@@ -31,3 +31,56 @@ and output arguments) for various microcontroller architectures and select upon 
 which version is used with portable, common main functions. Start with ``main_uart.c`` as
 a basic example, and link the appropriate ``Makefile.*`` to ``Makefile`` (ln -s) to compile
 for the given target using ``make``.
+
+## Getting familiar with GDB (STM32F100VL-Discovery/QEMU)
+
+Terminal1: ``st-util`` returns ``INFO common.c: STM32F1xx_VL_MD_LD: 8 KiB SRAM, 128 KiB flash in at least 1 KiB pages``
+and ``INFO gdb-server.c: Listening at *:4242...``
+
+Terminal2: run ``gdb-multiarch -q test.elf`` and from the GDB terminal:
+```
+target remote localhost:4242
+load
+break fact
+continue
+```
+will output after a few seconds
+```
+Breakpoint 1, fact (n=5) at factoriel.c:7
+7       {volatile int __attribute__((unused)) tmp=n;
+```
+and dumping the stack with ``bt`` shows
+```
+#0  fact (n=5) at factoriel.c:7
+#1  0x0800019a in main () at factoriel.c:22
+```
+Then ``continue`` and once stopped, ``bt`` will show
+```
+(gdb) continue
+Continuing.
+ 
+Breakpoint 1, fact (n=4) at factoriel.c:7
+7       {volatile int __attribute__((unused)) tmp=n;
+(gdb) bt
+#0  fact (n=4) at factoriel.c:7
+#1  0x0800016c in fact (n=5) at factoriel.c:9
+#2  0x0800019a in main () at factoriel.c:22
+```
+We can dump the content of the heap with ``x/10x 0x20000000``
+showing
+```
+0x20000000 <variable2.1>:       0x00000055      0x00000042      0x016e3600      0x016e3600
+0x20000010 <rcc_apb2_frequency>:        0x016e3600      0x0701f04f      0x423c682c      0xf04fd1fc
+0x20000020:     0x423c0714      0x3a02d101
+```
+and the content of the stack with ``x/10x $sp`` showing
+```
+0x20001fb0:     0x20001fc1      0x00000004      0x20001fc0      0x00000004
+0x20001fc0:     0x20001fc8      0x0800016d      0xddee7e76      0x00000005
+0x20001fd0:     0x20001fc1      0x00000005
+```
+while the position of the stack is given with ``print $sp`` and showing ``$1 = (void *) 0x20001fb0``
+or anything close to the end of the RAM region depending on past function call history.
+
+``step`` v.s. ``next``:  when calling a function, ``next`` executes the functions and returns to
+the function output, while ``step`` will go into the function and continue step by step execution.
