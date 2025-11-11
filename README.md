@@ -32,9 +32,9 @@ which version is used with portable, common main functions. Start with ``main_ua
 a basic example, and link the appropriate ``Makefile.*`` to ``Makefile`` (ln -s) to compile
 for the given target using ``make``.
 
-## Getting familiar with GDB (STM32F100VL-Discovery/QEMU)
+# Getting familiar with GDB (STM32F100VL-Discovery/QEMU)
 
-# STM32VLD-Discovery
+## STM32VLD-Discovery
 
 <img src="stm32vldisco.png">
 
@@ -89,7 +89,7 @@ or anything close to the end of the RAM region depending on past function call h
 ``step`` v.s. ``next``:  when calling a function, ``next`` executes the functions and returns to
 the function output, while ``step`` will go into the function and continue step by step execution.
 
-# QEMU
+## QEMU
 
 Launch ``qemu`` emulating the STM32VL-Discovery with 
 ```
