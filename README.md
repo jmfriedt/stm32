@@ -34,6 +34,10 @@ for the given target using ``make``.
 
 ## Getting familiar with GDB (STM32F100VL-Discovery/QEMU)
 
+# STM32VLD-Discovery
+
+<img src="stm32vldisco.png">
+
 Terminal1: ``st-util`` returns ``INFO common.c: STM32F1xx_VL_MD_LD: 8 KiB SRAM, 128 KiB flash in at least 1 KiB pages``
 and ``INFO gdb-server.c: Listening at *:4242...``
 
@@ -84,3 +88,43 @@ or anything close to the end of the RAM region depending on past function call h
 
 ``step`` v.s. ``next``:  when calling a function, ``next`` executes the functions and returns to
 the function output, while ``step`` will go into the function and continue step by step execution.
+
+# QEMU
+
+Launch ``qemu`` emulating the STM32VL-Discovery with 
+```
+qemu-system-arm -M stm32vldiscovery -s -S -serial stdio -kernel test.bin
+```
+with ``-s`` telling to launch the GDB server on port 1234 and ``-S`` to *not* run the program
+until requested to. Then same as before, except ``target remote localhost:1234``
+
+Notice that when linking with ``libopencm3``, if nothing happens and CTRL-c to break will display
+```
+Program received signal SIGINT, Interrupt.
+0x080006b2 in rcc_is_osc_ready (osc=<optimized out>) at rcc.c:353
+353                     return RCC_CR & RCC_CR_HSERDY;
+```
+indicating the executing is hanging in the PLL test function. This peripheral is erroneously
+emulated with qemu and the function must be commented out in libopencm3, by editing ``libopencm3/lib/stm32/f1/rcc.c`` and commenting ``while (!rcc_is_osc_ready(osc));`` in ``rcc_wait_for_osc_ready(enum rcc_osc osc)``. After the modification, recompile ``libopencm3`` and this program to link with the
+updated library. If all goes well:
+```
+$ gdb-multiarch -q test.elf 
+Reading symbols from test.elf...
+(gdb) target remote localhost:1234
+Remote debugging using localhost:1234
+reset_handler () at ../../cm3/vector.c:67
+67              for (src = &_data_loadaddr, dest = &_data;
+(gdb) load
+Loading section .text, size 0x1284 lma 0x8000000
+Loading section .data, size 0x14 lma 0x8001284
+Start address 0x080010bc, load size 4760
+Transfer rate: 4648 KB/sec, 1190 bytes/write.
+(gdb) break fact
+Breakpoint 1 at 0x8000158: file factoriel.c, line 7.
+(gdb) continue
+Continuing.
+ 
+Breakpoint 1, fact (n=5) at factoriel.c:7
+7       {volatile int __attribute__((unused)) tmp=n;
+(gdb) 
+```
