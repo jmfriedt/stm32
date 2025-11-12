@@ -34,8 +34,8 @@ void init_gpio(void)
 {
 	gpio_enable_ahb_aperture();
 	periph_clock_enable(RCC_GPIOF);
-	gpio_mode_setup(GPIOF, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO2);
-	gpio_set_output_config(GPIOF, GPIO_OTYPE_PP, GPIO_DRIVE_2MA, GPIO2);
+	gpio_mode_setup(GPIOF, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO1 | GPIO2 | GPIO3); // RGB LED is PF1,2,3
+	gpio_set_output_config(GPIOF, GPIO_OTYPE_PP, GPIO_DRIVE_2MA, GPIO1 | GPIO2 | GPIO3);
 }
 
 void clock_setup(void)

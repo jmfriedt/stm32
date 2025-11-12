@@ -1,19 +1,21 @@
 #include <stdio.h>
 #include "fixed.h"
 
-long addfix(long in1,long in2) {return(in1+in2);}
+signed long addfix(signed long in1,signed long in2) {return(in1+in2);}
 
-long mulfix(long in1,long in2)
-{long long tmp;
- tmp=(long long)in1*(long long)in2;
+signed long subfix(signed long in1,signed long in2) {return(in1-in2);}
+
+signed long mulfix(signed long in1,signed long in2)
+{signed long long tmp;
+ tmp=(signed long long)in1*(signed long long)in2;
  tmp/=SCALE;
  return((int)tmp);
 }
 
-long divfix(long in1,long in2)
-{long long tmp=(long long)in1*SCALE;
+signed long divfix(signed long in1,signed long in2)
+{signed long long tmp=(signed long long)in1*SCALE;
  if (in2!=0)
-    tmp/=(long long)in2;
+    tmp/=(signed long long)in2;
  else tmp=0;
- return((long)tmp);
+ return((signed long)tmp);
 }
