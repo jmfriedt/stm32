@@ -2,7 +2,7 @@ PATH:=$(HOME)/stm32/qemu/qemu_stm32/arm-softmmu:$(PATH)
 # PATH:=$(HOME)/qemu_stm32/arm-softmmu:$(PATH)
 PROJ_NAME =test
 CC=arm-none-eabi-gcc
-SRCS=uart_f1.o main_uart.o
+SRCS=uart_f1.o main_uart.o spi_f1.o
 REPERTOIRE=/home/jmfriedt/libopencm3
 
 DRAPEAU =-Wall -g
