@@ -1,6 +1,6 @@
 PROJ_NAME =test
 CC=gcc
-SRCS=uart_pc.o main_uart.o 
+SRCS=uart_pc.o main_uart.o spi_pc.o
 
 DRAPEAU =-Wall
 
@@ -11,6 +11,12 @@ $(PROJ_NAME).pc: $(SRCS)
 
 main_uart.o: main_uart.c
 	$(CC) $(DRAPEAU) -c main_uart.c
+
+uart_pc.o: uart_pc.c
+	$(CC) $(DRAPEAU) -c uart_pc.c
+
+spi_pc.o: spi_pc.c
+	$(CC) $(DRAPEAU) -c spi_pc.c
 
 clean:
 	rm *.o $(PROJ_NAME).pc
