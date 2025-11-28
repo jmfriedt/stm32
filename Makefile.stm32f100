@@ -8,7 +8,7 @@ COMMONS = -mthumb -mcpu=cortex-m3
 DRAPEAU =-g -Wall
 DRAPEAU +=$(COMMONS) -DSTM32F1 -DSTM32F10X_LD_VL
 DRAPEAU +=-I$(REPERTOIRE)/include
-LDFLAGS = $(COMMONS) -g -L$(REPERTOIRE)/lib -lm --static  -Tstm32f1.ld -nostartfiles
+LDFLAGS = $(COMMONS) -g -L$(REPERTOIRE)/lib -lm --static -Tstm32f1.ld -nostartfiles
 LDFLAGS +=-lopencm3_stm32f1 -lc -lnosys
 
 all:$(PROJ_NAME).bin

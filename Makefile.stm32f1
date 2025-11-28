@@ -7,9 +7,9 @@ REPERTOIRE=/home/jmfriedt/libopencm3
 
 DRAPEAU =-Wall -g
 DRAPEAU +=-mthumb -mcpu=cortex-m3 -DSTM32F1
-DRAPEAU +=--static  -Tstm32f1.ld -nostartfiles
+DRAPEAU +=--static  
 DRAPEAU += -I$(REPERTOIRE)/include
-LDFLAGS = -g -L$(REPERTOIRE)/lib -lm -lopencm3_stm32f1 # -lc -lnosys
+LDFLAGS = -g -L$(REPERTOIRE)/lib -Tstm32f1.ld -nostartfiles -lm -lopencm3_stm32f1 # -lc -lnosys
 
 all:$(PROJ_NAME).bin
 
